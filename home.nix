@@ -12,7 +12,6 @@ in
     # cli i use constantly
     ripgrep   # fast search
     fd        # fast find
-    fzf       # fuzzy finder
     jq        # json on the command line
     lazygit
     neovim
@@ -27,7 +26,21 @@ in
     autosuggestion.enable = true;      # ghost text from history
     syntaxHighlighting.enable = true;  # commands turn green when valid
     initContent = ''
-      bindkey '^f' autosuggest-accept
+      bindkey '^e' autosuggest-accept
+
+      # Ctrl+F: fuzzy-find a file and open it in nvim
+      find-file-widget() {
+        local file
+        file=$(fd --type f --hidden --exclude .git 2>/dev/null | fzf --height 40% --reverse)
+        if [[ -n "$file" ]]; then
+          BUFFER="nvim -- ''${(q)file}"
+          zle accept-line
+        else
+          zle reset-prompt
+        fi
+      }
+      zle -N find-file-widget
+      bindkey '^f' find-file-widget
     '';
     shellAliases = {
       ".." = "cd ..";
@@ -38,6 +51,11 @@ in
       cc = "claude --dangerously-skip-permissions";
       co = "codex --full-auto";
     };
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true; # Ctrl+R / Ctrl+T / Alt+C open the fuzzy menu instead of plain single-line search
   };
 
   programs.starship = {
