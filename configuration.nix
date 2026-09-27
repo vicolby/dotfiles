@@ -36,11 +36,11 @@
     onActivation.extraFlags = [ "--force" ];
     brews = [
       "herdr"
+      "anomalyco/tap/opencode-v2"
     ];
     casks = [
       "wezterm"
       "claude-code"
-      "opencode"
     ];
   };
 }
