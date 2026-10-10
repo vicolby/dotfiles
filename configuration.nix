@@ -37,10 +37,19 @@
     brews = [
       "herdr"
       "anomalyco/tap/opencode-v2"
+      "uv"
+      "ripgrep"
+      "databricks"
+      "poetry"
+      "pipx"
+      "glab"
+      "pyenv"
+      "python@3.14"
     ];
     casks = [
       "wezterm"
       "claude-code"
+      "codex"
     ];
   };
 }

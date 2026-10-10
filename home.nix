@@ -15,6 +15,11 @@ in
     jq        # json on the command line
     lazygit
     neovim
+    nodejs    # node/npx, needed by MCP servers like argocd-mcp and repograph
+    basedpyright  # python LSP for nvim (go to definition etc.)
+    kubectl
+    awscli2   # aws-iam-authenticator via `aws eks get-token`, used by kubectl exec credential plugin
+    argocd
     # the font everything renders in
     nerd-fonts.hack
   ];
@@ -50,7 +55,13 @@ in
       m = "git switch main";
       cc = "claude --dangerously-skip-permissions";
       co = "codex --full-auto";
+      k = "kubectl";
     };
+  };
+
+  programs.pyenv = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   programs.fzf = {

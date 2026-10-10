@@ -1,8 +1,8 @@
 return {
   {
-    'NeogitOrg/neogit',
-    dependencies = { 'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim' },
-    keys = { { '<leader>g', function() require('neogit').open() end, desc = 'Neogit' } },
+    'kdheepak/lazygit.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = { { '<leader>g', '<cmd>LazyGit<cr>', desc = 'Lazygit' } },
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -10,4 +10,3 @@ return {
     opts = { current_line_blame = true },  -- who last touched this line
   },
 }
-
