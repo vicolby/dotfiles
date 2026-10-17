@@ -36,20 +36,19 @@
     onActivation.extraFlags = [ "--force" ];
     brews = [
       "herdr"
-      "anomalyco/tap/opencode-v2"
       "uv"
       "ripgrep"
-      "databricks"
-      "poetry"
-      "pipx"
-      "glab"
       "pyenv"
-      "python@3.14"
+      "gh"
+      "anomalyco/tap/opencode-v2"
+      "odin"
+      "ols"
+      "treehouse"  # worktree manager used by firstmate
     ];
     casks = [
       "wezterm"
       "claude-code"
-      "codex"
+      "openwhispr"
     ];
   };
 }

@@ -10,3 +10,17 @@ vim.lsp.config('basedpyright', {
   },
 })
 vim.lsp.enable('basedpyright')
+
+vim.lsp.config('gopls', {
+  cmd = { 'gopls' },
+  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  root_markers = { 'go.work', 'go.mod', '.git' },
+})
+vim.lsp.enable('gopls')
+
+vim.lsp.config('ols', {
+  cmd = { 'ols' },
+  filetypes = { 'odin' },
+  root_markers = { 'ols.json', '.git' },
+})
+vim.lsp.enable('ols')

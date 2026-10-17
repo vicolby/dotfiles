@@ -3,32 +3,32 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "command": "chrome-devtools-axi",
             "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash|Grep|Glob",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "glab orbit hook-guard search"
           }
         ]
       },
       {
-        "matcher": "Read",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "glab orbit hook-guard read"
+            "command": "gh-axi",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/alenag./.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
@@ -39,25 +39,16 @@
     "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); if [ -n \"$used\" ]; then printf \"%s | ctx: %.0f%% used\" \"$model\" \"$used\"; else printf \"%s\" \"$model\"; fi"
   },
   "enabledPlugins": {
-    "mattpocock-skills@claude-plugins-official": true,
-    "python-team@python-team": true,
-    "code-review@claude-plugins-official": true
+    "mattpocock-skills@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "python-team": {
-      "source": {
-        "source": "git",
-        "url": "git@gitlab.com:fhl-world/ml-prod/agentic-engineering.git"
-      }
-    }
-  },
+  "extraKnownMarketplaces": {},
   "modelSettings": {
     "claude-sonnet-5-5": {
       "effortLevel": "medium"
     }
   },
-  "autoCompactWindow": 150000,
+  "autoCompactWindow": 200000,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark-ansi"
+  "theme": "auto"
 }

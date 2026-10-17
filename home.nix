@@ -1,4 +1,4 @@
-{ config, pkgs, user, ... }:
+{ config, lib, pkgs, user, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
@@ -17,6 +17,8 @@ in
     neovim
     nodejs    # node/npx, needed by MCP servers like argocd-mcp and repograph
     basedpyright  # python LSP for nvim (go to definition etc.)
+    go        # go toolchain
+    gopls     # go LSP for nvim
     kubectl
     awscli2   # aws-iam-authenticator via `aws eks get-token`, used by kubectl exec credential plugin
     argocd
@@ -25,6 +27,35 @@ in
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
+
+  # Tools not packaged in nixpkgs or Homebrew (firstmate's toolchain) install into user-writable
+  # prefixes, since the Nix-managed npm prefix is read-only.
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.npm-global/bin"
+    "${config.home.homeDirectory}/.local/bin"
+  ];
+  home.file.".npmrc".text = ''
+    prefix=${config.home.homeDirectory}/.npm-global
+  '';
+  home.activation.installFirstmateTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # Subshell so the PATH change cannot leak into later home-manager steps (macOS /usr/bin
+    # readlink lacks -e, which breaks link generation).
+    (
+      export PATH="${pkgs.nodejs}/bin:${pkgs.git}/bin:$PATH:/usr/bin:/bin"
+      # Set explicitly: this step can run before ~/.npmrc is linked on the first activation.
+      export NPM_CONFIG_PREFIX="$HOME/.npm-global"
+      for pkg in gh-axi chrome-devtools-axi tasks-axi quota-axi lavish-axi; do
+        if [ ! -e "$HOME/.npm-global/bin/$pkg" ]; then
+          run npm install -g "$pkg" || echo "warning: npm install -g $pkg failed"
+        fi
+      done
+      if [ ! -e "$HOME/.local/bin/no-mistakes" ]; then
+        run env NO_MISTAKES_INSTALL_DIR="$HOME/.local/bin" sh -c \
+          'curl -fsSL https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/docs/install.sh | sh' \
+          || echo "warning: no-mistakes install failed"
+      fi
+    )
+  '';
 
   programs.zsh = {
     enable = true;
